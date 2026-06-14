@@ -114,7 +114,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .vp-fill{height:100%;background:linear-gradient(90deg,#22C55E,var(--gold2));border-radius:2px;}
 
 /* ── TOP BAR ── */
-.topbar{background:#000;border-bottom:1px solid rgba(201,168,76,0.07);padding:9px 20px;text-align:center;font-size:12px;font-weight:600;color:var(--white2);}
+.topbar{background:#000;border-bottom:1px solid rgba(201,168,76,0.07);padding:9px 20px;text-align:center;font-size:12px;font-weight:600;color:var(--white2);position:relative;z-index:9996;margin-top:62px;}
 .topbar strong{color:var(--gold3);}
 .tb-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(232,64,64,0.1);border:1px solid rgba(232,64,64,0.22);color:#FF8070;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;margin-left:8px;font-family:'JetBrains Mono',monospace;}
 
@@ -139,7 +139,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .reveal-r.on{opacity:1;transform:translateX(0);}
 
 /* ══════ 1. HERO ══════ */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 32px 80px;position:relative;overflow:hidden;background:#000;}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 32px 80px;position:relative;overflow:hidden;background:#000;}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.015) 1px,transparent 1px);background-size:80px 80px;}
 .hero-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:600px;background:radial-gradient(ellipse,rgba(201,168,76,0.05) 0%,transparent 65%);pointer-events:none;}
 .orb1{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(130px);background:rgba(201,168,76,0.025);top:-60px;left:-80px;pointer-events:none;}
@@ -995,6 +995,160 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 .jm-app-inner .card{background:#0E0E0E;border:1px solid #1e1e1e;border-radius:10px;padding:16px;}
 /* ══ END JOURNAL MINIMAL CSS ══ */
 
+/* ══ NAVBAR ══ */
+.navbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:9998;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:transform 0.35s ease, background 0.3s ease;
+}
+.navbar.hidden{transform:translateY(-100%);}
+.navbar.scrolled{background:rgba(0,0,0,0.98);}
+.nav-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 28px;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--gold2);
+  letter-spacing:2.5px;
+  text-decoration:none;
+  flex-shrink:0;
+}
+.nav-logo span{color:var(--white3);font-size:16px;}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  list-style:none;
+}
+.nav-links a{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--white3);
+  text-decoration:none;
+  padding:7px 11px;
+  border-radius:6px;
+  letter-spacing:0.3px;
+  transition:color 0.2s, background 0.2s;
+  white-space:nowrap;
+}
+.nav-links a:hover{color:var(--gold2);background:rgba(201,168,76,0.07);}
+.nav-links a.active{color:var(--gold2);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000 !important;
+  font-weight:800 !important;
+  font-size:12px !important;
+  padding:8px 18px !important;
+  border-radius:6px;
+  margin-left:6px;
+  transition:box-shadow 0.2s !important;
+}
+.nav-cta:hover{box-shadow:0 0 18px rgba(201,168,76,0.4);background:rgba(201,168,76,0.07) !important;color:#000 !important;}
+
+/* Hamburger */
+.nav-toggle{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  width:40px;height:40px;
+  background:none;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  cursor:pointer;
+  padding:8px;
+  flex-shrink:0;
+}
+.nav-toggle span{
+  display:block;
+  width:20px;height:1.5px;
+  background:var(--white2);
+  border-radius:2px;
+  transition:all 0.3s ease;
+  transform-origin:center;
+}
+.nav-toggle.open span:nth-child(1){transform:rotate(45deg) translate(4.5px, 4.5px);}
+.nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px);}
+
+/* Mobile menu drawer */
+.nav-drawer{
+  display:none;
+  flex-direction:column;
+  background:rgba(4,4,4,0.98);
+  backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  padding:16px 20px 24px;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s ease;
+}
+.nav-drawer.open{max-height:600px;display:flex;}
+.nav-drawer a{
+  display:block;
+  font-size:15px;
+  font-weight:600;
+  color:var(--white2);
+  text-decoration:none;
+  padding:13px 4px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  letter-spacing:0.3px;
+  transition:color 0.2s, padding-left 0.2s;
+}
+.nav-drawer a:last-child{border-bottom:none;}
+.nav-drawer a:hover{color:var(--gold2);padding-left:8px;}
+.nav-drawer .drawer-cta{
+  margin-top:16px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#000 !important;
+  font-weight:800;
+  font-size:14px;
+  padding:14px !important;
+  border-radius:8px;
+  text-align:center;
+  border-bottom:none !important;
+}
+.nav-drawer .drawer-cta:hover{padding-left:4px !important;box-shadow:0 0 24px rgba(201,168,76,0.3);}
+
+/* Section label for drawer */
+.drawer-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--white3);
+  padding:12px 4px 6px;
+  margin-top:4px;
+}
+
+/* ══ TABLET ══ */
+@media(max-width:1024px){
+  .nav-links{gap:2px;}
+  .nav-links a{font-size:11.5px;padding:6px 8px;}
+}
+
+@media(max-width:820px){
+  .nav-links,.nav-cta{display:none;}
+  .nav-toggle{display:flex;}
+  .nav-drawer{display:flex;flex-direction:column;}
+  .nav-drawer:not(.open){display:none;}
+  .nav-inner{padding:0 20px;}
+}
+
 @media(max-width:720px){
   .cmp-grid{grid-template-columns:1fr;}.cmp-sep{display:none;}
   .sol-wrap{grid-template-columns:1fr;}
@@ -1007,40 +1161,75 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
   body{cursor:auto;}
   .cur,.cur-ring{display:none;}
   *{cursor:auto !important;}
-  .hero-btn,.s-btn,.buy-btn,.sol-cta,.cc-btn,.cta-big-btn{cursor:pointer !important;}
-  .hero{padding:80px 24px 60px;}
+  .hero-btn,.s-btn,.buy-btn,.sol-cta,.cc-btn,.cta-big-btn,.nav-cta,.drawer-cta{cursor:pointer !important;}
+  .hero{padding:90px 20px 60px;}
   .hero-inner{padding-top:0;}
-  /* Hero h1 stays at comfortable size */
-  .hero h1{font-size:clamp(40px,12vw,64px);letter-spacing:-0.5px;}
-  .sec-title{font-size:clamp(40px,10vw,72px);}
+  .hero h1{font-size:clamp(36px,11vw,60px);letter-spacing:-0.5px;}
+  .sec-title{font-size:clamp(38px,9.5vw,68px);}
   .prob-title{font-size:18px;}
   .prob-desc{font-size:15px;}
   .vp-toast{max-width:230px;}
   .laptop-scroll-wrap::after{
     content:'← scroll →';
-    display:block;
-    text-align:center;
-    font-size:9px;
-    color:rgba(201,168,76,0.4);
+    display:block;text-align:center;
+    font-size:9px;color:rgba(201,168,76,0.4);
     font-family:'JetBrains Mono',monospace;
-    letter-spacing:2px;
-    margin-top:6px;
+    letter-spacing:2px;margin-top:6px;
   }
-  /* Journal mockup mobile */
   .jm-app-outer{height:520px;}
   .jm-tabs{gap:4px;}
   .jm-tab{font-size:10.5px;padding:7px 10px;}
   .journal-mockup-wrap{max-width:100%;}
   .page-tabs{display:none!important;}
   .mob-nav{display:flex!important;}
-  /* Price compare on mobile */
   .pcs-cards{flex-direction:column;}
   .hero-stats{display:none;}
+  /* Padding for sections on mobile */
+  .problem,.solution,.compare,.community,.inside,.bonus,.pricing,.testi,.guarantee,.faq,.cta-main,.cta-close{padding-left:20px;padding-right:20px;}
+  .sec-sub{font-size:15px;}
+}
+
+/* ══ EXTRA SMALL ══ */
+@media(max-width:390px){
+  .hero h1{font-size:clamp(32px,10vw,52px);}
+  .sec-title{font-size:clamp(34px,9vw,56px);}
+  .nav-logo{font-size:19px;letter-spacing:1.5px;}
+  .vp-toast{max-width:200px;}
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar" id="mainNav">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" onclick="smoothTo('hero')">TRADE<span>VISION</span></a>
+    <ul class="nav-links">
+      <li><a href="#problem" onclick="smoothTo('problem')">Masalah</a></li>
+      <li><a href="#solution" onclick="smoothTo('solution')">Solusi</a></li>
+      <li><a href="#features" onclick="smoothTo('features')">Fitur</a></li>
+      <li><a href="#mockup" onclick="smoothTo('mockup')">Demo</a></li>
+      <li><a href="#testimonials" onclick="smoothTo('testimonials')">Testimoni</a></li>
+      <li><a href="#faq" onclick="smoothTo('faq')">FAQ</a></li>
+      <li><a href="#order" class="nav-cta" onclick="smoothTo('order')">Beli Sekarang →</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-drawer" id="navDrawer">
+    <div class="drawer-label">Navigasi</div>
+    <a href="#problem" onclick="smoothTo('problem');closeDrawer()">😓 Masalah Trader</a>
+    <a href="#solution" onclick="smoothTo('solution');closeDrawer()">✨ Solusi TradeVision</a>
+    <a href="#features" onclick="smoothTo('features');closeDrawer()">⚡ Fitur Lengkap</a>
+    <a href="#mockup" onclick="smoothTo('mockup');closeDrawer()">📊 Demo Jurnal</a>
+    <a href="#bonus" onclick="smoothTo('bonus');closeDrawer()">🎁 Bonus Eksklusif</a>
+    <a href="#testimonials" onclick="smoothTo('testimonials');closeDrawer()">💬 Testimoni</a>
+    <a href="#faq" onclick="smoothTo('faq');closeDrawer()">❓ FAQ</a>
+    <a href="#order" class="drawer-cta" onclick="smoothTo('order');closeDrawer()">🔥 Beli Sekarang → Rp 147rb</a>
+  </div>
+</nav>
 
 <div class="cur" id="cur"></div>
 <div class="cur-ring" id="curRing"></div>
@@ -1080,7 +1269,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </div>
 
 <!-- ══════ 1. HERO ══════ -->
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="orb1"></div><div class="orb2"></div>
@@ -1115,7 +1304,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 2. PROBLEM ══════ -->
-<section class="problem">
+<section class="problem" id="problem">
   <div class="prob-inner">
     <div class="prob-hd reveal">
       <div class="sec-lbl">Ini yang Sebenarnya Terjadi</div>
@@ -1155,7 +1344,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 3. SOLUTION ══════ -->
-<section class="solution">
+<section class="solution" id="solution">
   <div class="sol-inner">
     <div class="sol-wrap">
       <div class="sol-left reveal">
@@ -1185,7 +1374,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 4. COMPARE ══════ -->
-<section class="compare">
+<section class="compare" id="compare">
   <div class="cmp-inner">
     <div class="cmp-hd reveal">
       <div class="sec-lbl">Sebelum Lo Skip</div>
@@ -1751,7 +1940,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 6. COMMUNITY ══════ -->
-<section class="community">
+<section class="community" id="community">
   <div class="comm-inner">
     <div class="comm-wrap">
       <div class="comm-left reveal">
@@ -2003,7 +2192,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
   </div>
 </section>
 <!-- ══════ 13. GUARANTEE ══════ -->
-<section class="guarantee">
+<section class="guarantee" id="guarantee">
   <div class="guar-inner reveal">
     <div class="guar-card">
       <div class="guar-icon">🛡️</div>
@@ -2020,7 +2209,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 14. CTA UTAMA ══════ -->
-<section class="cta-main">
+<section class="cta-main" id="order">
   <div class="cta-inner reveal">
     <div class="cta-pill">⏰ SLOT MAKIN BERKURANG</div>
     <h2 class="sec-title" style="font-size:clamp(52px,10vw,100px);letter-spacing:-2.5px;">Kapan lo mau<br><em>berhenti boncos?</em></h2>
@@ -2039,7 +2228,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
 </section>
 
 <!-- ══════ 15. FAQ ══════ -->
-<section class="faq">
+<section class="faq" id="faq">
   <div class="faq-inner">
     <div class="faq-hd reveal">
       <div class="sec-lbl">Pertanyaan Umum</div>
@@ -2453,7 +2642,6 @@ const hsEl=document.querySelector('.hero-stats');if(hsEl)hsObs.observe(hsEl);
 
 /* ── JOURNAL INIT after prefill ── */
 (function initJournal() {
-  // Wait for DOM then trigger journal re-render with prefilled data
   setTimeout(function() {
     try {
       if (typeof window.recalcAll === 'function') window.recalcAll();
@@ -2461,10 +2649,102 @@ const hsEl=document.querySelector('.hero-stats');if(hsEl)hsObs.observe(hsEl);
       if (typeof window.renderStats === 'function') window.renderStats();
       if (typeof window.renderDW === 'function') window.renderDW();
       if (typeof window.renderRekap === 'function') window.renderRekap();
-      // Switch to data page so table is visible
       if (typeof window.switchPage === 'function') window.switchPage('data');
     } catch(e) { console.log('Journal init:', e); }
   }, 800);
+})();
+
+/* ══════════════════════════════════
+   NAVBAR — scroll hide/show + active
+══════════════════════════════════ */
+(function initNavbar() {
+  const nav = document.getElementById('mainNav');
+  const toggle = document.getElementById('navToggle');
+  const drawer = document.getElementById('navDrawer');
+  if (!nav) return;
+
+  // Smooth scroll helper (also used by existing go() links)
+  window.smoothTo = function(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const navH = nav.offsetHeight;
+    const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  };
+
+  // Hamburger toggle
+  window.toggleDrawer = function() {
+    const open = drawer.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  window.closeDrawer = function() {
+    drawer.classList.remove('open');
+    toggle.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  // Close drawer on outside click
+  document.addEventListener('click', function(e) {
+    if (!nav.contains(e.target)) closeDrawer();
+  });
+
+  // Hide navbar on scroll down, show on scroll up
+  let lastY = 0, ticking = false;
+  window.addEventListener('scroll', function() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function() {
+      const y = window.scrollY;
+      if (y > lastY + 6 && y > 100) {
+        nav.classList.add('hidden');
+        closeDrawer();
+      } else if (y < lastY - 4) {
+        nav.classList.remove('hidden');
+      }
+      nav.classList.toggle('scrolled', y > 40);
+      lastY = y;
+      ticking = false;
+    });
+  }, { passive: true });
+
+  // Active nav link on scroll
+  const sections = [
+    { id: 'hero', link: '[href="#hero"]' },
+    { id: 'problem', link: '[href="#problem"]' },
+    { id: 'solution', link: '[href="#solution"]' },
+    { id: 'features', link: '[href="#features"]' },
+    { id: 'mockup', link: '[href="#mockup"]' },
+    { id: 'testimonials', link: '[href="#testimonials"]' },
+    { id: 'faq', link: '[href="#faq"]' },
+    { id: 'order', link: '[href="#order"]' },
+  ];
+  const navH = () => nav.offsetHeight + 20;
+  function updateActive() {
+    let current = '';
+    sections.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= navH()) current = id;
+    });
+    document.querySelectorAll('.nav-links a, .nav-drawer a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Remove topbar margin-top since navbar is fixed
+  // Just ensure hero has enough top padding
+  function adjustHero() {
+    const hero = document.getElementById('hero');
+    const topbar = document.querySelector('.topbar');
+    if (hero) {
+      const extra = topbar ? topbar.offsetHeight : 0;
+      hero.style.paddingTop = (nav.offsetHeight + extra + 20) + 'px';
+    }
+  }
+  adjustHero();
+  window.addEventListener('resize', adjustHero);
 })();
 </script>
 </body>
