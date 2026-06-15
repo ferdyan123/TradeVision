@@ -114,7 +114,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 .vp-fill{height:100%;background:linear-gradient(90deg,#22C55E,var(--gold2));border-radius:2px;}
 
 /* ── TOP BAR ── */
-.topbar{background:#000;border-bottom:1px solid rgba(201,168,76,0.07);padding:9px 20px;text-align:center;font-size:12px;font-weight:600;color:var(--white2);position:relative;z-index:9996;margin-top:62px;}
+.topbar{background:#000;border-bottom:1px solid rgba(201,168,76,0.07);padding:9px 20px;text-align:center;font-size:12px;font-weight:600;color:var(--white2);position:relative;z-index:9996;}
 .topbar strong{color:var(--gold3);}
 .tb-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(232,64,64,0.1);border:1px solid rgba(232,64,64,0.22);color:#FF8070;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;margin-left:8px;font-family:'JetBrains Mono',monospace;}
 
@@ -1141,7 +1141,7 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
   .nav-links a{font-size:11.5px;padding:6px 8px;}
 }
 
-@media(max-width:820px){
+@media(max-width:960px){
   .nav-links,.nav-cta{display:none;}
   .nav-toggle{display:flex;}
   .nav-drawer{display:flex;flex-direction:column;}
@@ -1231,6 +1231,8 @@ footer p{font-size:11.5px;color:rgba(255,255,255,0.11);line-height:2;}
     <a href="#order" class="drawer-cta" onclick="smoothTo('order');closeDrawer()">🔥 Beli Sekarang → Rp 147rb</a>
   </div>
 </nav>
+<!-- Navbar spacer: pushes content below fixed navbar -->
+<div style="height:62px;"></div>
 
 <div class="cur" id="cur"></div>
 <div class="cur-ring" id="curRing"></div>
@@ -2734,15 +2736,9 @@ const hsEl=document.querySelector('.hero-stats');if(hsEl)hsObs.observe(hsEl);
   window.addEventListener('scroll', updateActive, { passive: true });
   updateActive();
 
-  // Remove topbar margin-top since navbar is fixed
-  // Just ensure hero has enough top padding
+  // Spacer div already handles navbar offset, just ensure hero has breathing room
   function adjustHero() {
-    const hero = document.getElementById('hero');
-    const topbar = document.querySelector('.topbar');
-    if (hero) {
-      const extra = topbar ? topbar.offsetHeight : 0;
-      hero.style.paddingTop = (nav.offsetHeight + extra + 20) + 'px';
-    }
+    // Nothing needed - spacer div handles it
   }
   adjustHero();
   window.addEventListener('resize', adjustHero);
